@@ -4,12 +4,7 @@ on:
   pull_request:
     types: [opened, synchronize, reopened, review_requested]
 
-permissions:
-  contents: read
-  pull-requests: write
-  issues: write
-
 jobs:
-  review:
-    uses: ./.github/workflows/reusable-pr-reviewer.yml
+  pr-reviewer:
+    uses: FaserF/repo-template/.github/workflows/reusable-pr-reviewer.yml@v1
     secrets: inherit
