@@ -1,16 +1,23 @@
-name: Hermes Bot
+name: Hermes Interactive Bot
 
 on:
   issue_comment:
-    types: [created]
+    types: [created, edited]
+  pull_request_review_comment:
+    types: [created, edited]
+  pull_request_review:
+    types: [submitted, edited]
+  issues:
+    types: [edited]
+  pull_request:
+    types: [edited]
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
 
 jobs:
-  hermes:
-    if: |
-      !github.event.comment.user.bot &&
-      (contains(github.event.comment.body, '@hermes') ||
-       contains(github.event.comment.body, '@faserf-bot') ||
-       contains(github.event.comment.body, '/hermes') ||
-       contains(github.event.comment.body, '/fix'))
+  bot:
     uses: FaserF/repo-template/.github/workflows/reusable-hermes-bot.yml@v1
     secrets: inherit

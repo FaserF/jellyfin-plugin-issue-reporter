@@ -3,9 +3,16 @@ name: OpenHands Issue Resolver
 on:
   issues:
     types: [labeled]
+  pull_request:
+    types: [labeled]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
 
 jobs:
-  openhands:
-    if: github.event.label.name == 'fix-with-openhands' || github.event.label.name == 'openhands'
+  resolve:
+    if: github.event.label.name == 'openhands:ready'
     uses: FaserF/repo-template/.github/workflows/reusable-openhands-resolver.yml@v1
     secrets: inherit

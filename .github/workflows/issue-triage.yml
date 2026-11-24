@@ -2,10 +2,15 @@ name: Issue Triage
 
 on:
   issues:
-    types: [opened, edited]
+    types: [opened]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
 
 jobs:
   triage:
-    if: github.event.issue.user.login != 'faserf' && !contains(github.event.issue.labels.*.name, 'automated')
     uses: FaserF/repo-template/.github/workflows/reusable-issue-triage.yml@v1
-    secrets: inherit
+    with:
+      auto_openhands: true
