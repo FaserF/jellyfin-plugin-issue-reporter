@@ -91,7 +91,7 @@ public sealed class GitHubDedupAndOutboxTests
         var client = new GitHubApiClient(factory, auth);
         var dedup = new DeduplicationService(client);
 
-        var match = await dedup.CheckGitHubDuplicateAsync(cfg, target, ev, fp);
+        var match = await dedup.CheckGitHubDuplicateAsync(cfg, target, ev, fp, TestContext.Current.CancellationToken);
         match.Action.Should().Be("comment_open");
         match.IssueNumber.Should().Be(12);
         match.CommentBody.Should().Contain("1.1.4.0");
@@ -116,7 +116,7 @@ public sealed class GitHubDedupAndOutboxTests
             RepoName = "youtube-jellyfin",
         };
         var ev = new LogEvent { CategoryName = "Jellyfin.Plugin.YouTube", Severity = "ERROR", ExceptionType = "InvalidOperationException", Message = "Stream error" };
-        var rendered = await engine.RenderIssueAsync(cfg, target, ev, "Stream error", string.Empty, "abcdef1234567890", 2, "12.4.0");
+        var rendered = await engine.RenderIssueAsync(cfg, target, ev, "Stream error", string.Empty, "abcdef1234567890", 2, "12.4.0", ct: TestContext.Current.CancellationToken);
         rendered.Title.Should().Contain("InvalidOperationException");
         rendered.Body.Should().Contain("12.4.0");
         rendered.Body.Should().Contain("abcdef1234567890");
