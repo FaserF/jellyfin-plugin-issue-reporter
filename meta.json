@@ -1,6 +1,6 @@
 {
   "category": "Administration",
-  "changelog": "Fix XmlSerializer compatibility for TargetOverrides (List instead of Dictionary)",
+  "changelog": "Deduplicate TargetKeys in RefreshConfiguration and guard BackgroundService startup",
   "description": "Resource-efficient Jellyfin plugin for plugin developers that monitors plugin logs, masks sensitive data across 4 layers, deduplicates GitHub issues with version intelligence, and auto-fills issue templates.",
   "guid": "8c4e7f2a-1b9d-4e3a-9c5f-6a2b8d1e4f90",
   "name": "Issue Reporter",
@@ -8,7 +8,7 @@
   "owner": "FaserF",
   "targetAbi": "12.0.0.0",
   "timestamp": "2026-11-24T15:00:00.0000000Z",
-  "version": "1.0.0.1",
+  "version": "1.0.0.2",
   "status": "Active",
   "autoUpdate": false,
   "assemblies": [

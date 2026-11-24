@@ -73,7 +73,13 @@ public sealed class IssueReporterCoordinator : BackgroundService
         _redactor.RefreshSecretsFromDirectory(_appPaths.PluginConfigurationsPath);
         var plugins = _pluginManager.Plugins.Select(lp => lp.Instance).Where(p => p is not null).Cast<IPlugin>();
         var discovered = _discovery.DiscoverPlugins(plugins, cfg);
-        _targets = discovered.ToDictionary(t => t.TargetKey, StringComparer.OrdinalIgnoreCase);
+        var map = new Dictionary<string, PluginTarget>(StringComparer.OrdinalIgnoreCase);
+        foreach (var target in discovered)
+        {
+            map.TryAdd(target.TargetKey, target);
+        }
+
+        _targets = map;
         _logMonitor.UpdateTargets(_targets.Values);
         _lastDiscovery = DateTimeOffset.UtcNow;
         _store.Stats.LastScanAt = _lastDiscovery.ToString("O");
@@ -81,8 +87,15 @@ public sealed class IssueReporterCoordinator : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        _store.Load();
-        RefreshConfiguration();
+        try
+        {
+            _store.Load();
+            RefreshConfiguration();
+        }
+        catch (Exception ex) when (ex is not OperationCanceledException)
+        {
+            _logger.LogError(ex, "Issue Reporter initialization failed; will retry on next timer tick");
+        }
 
         using var timer = new PeriodicTimer(TimeSpan.FromMinutes(10));
         var reader = _logMonitor.Reader;

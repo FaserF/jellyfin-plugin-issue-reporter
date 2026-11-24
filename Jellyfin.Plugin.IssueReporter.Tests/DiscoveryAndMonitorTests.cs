@@ -51,8 +51,12 @@ public sealed class DiscoveryAndMonitorTests
         ser.Serialize(sw, cfg);
         sw.ToString().Should().Contain("FaserF");
 
-        // Check built-in discovery of Issue Reporter assembly itself
+        // Check DiscoverPlugins handles duplicate plugin assemblies without throwing
         var discovery = new PluginDiscoveryService();
+        var discovered = discovery.DiscoverPlugins(new[] { selfPlugin.Object, selfPlugin.Object }, cfg);
+        discovered.Should().HaveCount(2);
+
+        // Check built-in discovery of Issue Reporter assembly itself
         var (o, r) = PluginDiscoveryService.ParseGitHubRepo("https://github.com/FaserF/youtube-jellyfin.git");
         o.Should().Be("FaserF");
         r.Should().Be("youtube-jellyfin");
