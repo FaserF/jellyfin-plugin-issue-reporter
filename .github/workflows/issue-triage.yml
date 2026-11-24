@@ -2,23 +2,10 @@ name: Issue Triage
 
 on:
   issues:
-    types: [opened]
-
-permissions:
-  contents: read
-  issues: write
-  pull-requests: write
+    types: [opened, edited]
 
 jobs:
   triage:
-    if: |
-      github.actor != 'faserf-hermes-agent[bot]' &&
-      !endsWith(github.actor, '[bot]') &&
-      !startsWith(github.actor, 'app/') &&
-      github.event.issue.user.type != 'Bot' &&
-      !endsWith(github.event.issue.user.login, '[bot]') &&
-      !startsWith(github.event.issue.user.login, 'app/') &&
-      !contains(github.event.issue.title, 'Dependency Dashboard') &&
-      !contains(github.event.issue.title, 'Renovate') &&
-      !contains(github.event.issue.title, 'Dependabot')
-    uses: ./.github/workflows/reusable-issue-triage.yml
+    if: github.event.issue.user.login != 'faserf' && !contains(github.event.issue.labels.*.name, 'automated')
+    uses: FaserF/repo-template/.github/workflows/reusable-issue-triage.yml@v1
+    secrets: inherit
