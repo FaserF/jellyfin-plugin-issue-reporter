@@ -1,6 +1,6 @@
 {
   "category": "Administration",
-  "changelog": "- Initial release of Issue Reporter for Jellyfin\n- Resource-efficient O(1) ILoggerProvider with bounded async channel\n- Dynamic plugin discovery with FaserF repository defaults & universal custom overrides\n- 4-layer secret harvesting, regex scrubbing, custom rules & fail-closed Leak Guard\n- ETag-cached GitHub client, anti-spam flood breaker, retry outbox & issue template auto-fill",
+  "changelog": "Fix XmlSerializer compatibility for TargetOverrides (List instead of Dictionary)",
   "description": "Resource-efficient Jellyfin plugin for plugin developers that monitors plugin logs, masks sensitive data across 4 layers, deduplicates GitHub issues with version intelligence, and auto-fills issue templates.",
   "guid": "8c4e7f2a-1b9d-4e3a-9c5f-6a2b8d1e4f90",
   "name": "Issue Reporter",
@@ -8,7 +8,7 @@
   "owner": "FaserF",
   "targetAbi": "12.0.0.0",
   "timestamp": "2026-11-24T15:00:00.0000000Z",
-  "version": "1.0.0.0",
+  "version": "1.0.0.1",
   "status": "Active",
   "autoUpdate": false,
   "assemblies": [

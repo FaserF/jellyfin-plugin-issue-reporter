@@ -45,6 +45,12 @@ public sealed class DiscoveryAndMonitorTests
         targets[1].Enabled.Should().BeTrue();
         targets[2].Enabled.Should().BeFalse();
 
+        // Check XmlSerializer compatibility (required by Jellyfin BasePluginConfiguration)
+        var ser = new System.Xml.Serialization.XmlSerializer(typeof(PluginConfiguration));
+        using var sw = new System.IO.StringWriter();
+        ser.Serialize(sw, cfg);
+        sw.ToString().Should().Contain("FaserF");
+
         // Check built-in discovery of Issue Reporter assembly itself
         var discovery = new PluginDiscoveryService();
         var (o, r) = PluginDiscoveryService.ParseGitHubRepo("https://github.com/FaserF/youtube-jellyfin.git");

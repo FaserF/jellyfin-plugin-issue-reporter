@@ -81,6 +81,6 @@ public sealed class PluginConfiguration : BasePluginConfiguration
 
     public bool StrictEntropyGuard { get; set; } = true;
 
-    // Per-plugin overrides (keyed by target_key)
-    public Dictionary<string, TargetOverride> TargetOverrides { get; set; } = new();
+    // Per-plugin overrides (List<TargetOverride> for XmlSerializer compatibility)
+    public List<TargetOverride> TargetOverrides { get; set; } = new();
 }

@@ -150,7 +150,7 @@ public sealed class IssueReporterCoordinator : BackgroundService
             return "flood_paused";
         }
 
-        config.TargetOverrides.TryGetValue(target.TargetKey, out var ov);
+        var ov = config.TargetOverrides.Find(o => string.Equals(o.TargetKey, target.TargetKey, StringComparison.OrdinalIgnoreCase));
         var (ignored, _) = _filter.ShouldIgnore(ev, config, ov);
         if (ignored)
         {

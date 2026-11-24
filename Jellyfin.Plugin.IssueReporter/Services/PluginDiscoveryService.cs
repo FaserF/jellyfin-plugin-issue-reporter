@@ -132,7 +132,7 @@ public sealed class PluginDiscoveryService
 
         foreach (var t in targets)
         {
-            config.TargetOverrides.TryGetValue(t.TargetKey, out var ov);
+            var ov = config.TargetOverrides.Find(o => string.Equals(o.TargetKey, t.TargetKey, StringComparison.OrdinalIgnoreCase));
             if (!string.IsNullOrWhiteSpace(ov?.RepoOverride))
             {
                 var (o, r) = ParseGitHubRepo(ov.RepoOverride);

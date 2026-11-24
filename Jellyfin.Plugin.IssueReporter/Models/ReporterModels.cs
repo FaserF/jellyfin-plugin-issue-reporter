@@ -6,6 +6,8 @@ namespace Jellyfin.Plugin.IssueReporter.Models;
 
 public sealed class TargetOverride
 {
+    public string TargetKey { get; set; } = string.Empty;
+
     public bool? Enabled { get; set; }
 
     public string? Mode { get; set; }
