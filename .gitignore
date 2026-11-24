@@ -1,47 +1,41 @@
-# Byte-compiled / optimized / DLL files
+# .NET build artifacts
+bin/
+obj/
+*.user
+*.suo
+.vs/
+*.dll
+*.exe
+*.pdb
+*.nupkg
+
+# Release packages
+*.zip
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Python (from repo template)
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
-
-# Distribution / packaging
 build/
 dist/
 *.egg-info/
 .eggs/
-*.zip
-
-# Environments
 .venv/
 env/
 venv/
 ENV/
 
-# Node / Web
+# Node
 node_modules/
-.eslintcache
+npm-debug.log
 
-# Unit test / coverage / type-check caches
-htmlcov/
-.coverage
-.coverage.*
-coverage.xml
-.hypothesis/
-.pytest_cache/
-.ruff_cache/
-.mypy_cache/
-.cache/
-
-# Secrets & local env files
-.env
-.env.*
-!.env.example
-*.pem
-*.key
-secrets/
-
-# Logs & OS artifacts
-*.log
+# OS
 .DS_Store
 Thumbs.db
-*.tmp
