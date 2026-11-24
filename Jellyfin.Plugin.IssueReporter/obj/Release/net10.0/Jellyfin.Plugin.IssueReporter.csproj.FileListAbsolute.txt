@@ -1,0 +1,15 @@
+/src/Jellyfin.Plugin.IssueReporter/obj/Release/net10.0/Jellyfin.Plugin.IssueReporter.csproj.AssemblyReference.cache
+/src/Jellyfin.Plugin.IssueReporter/obj/Release/net10.0/Jellyfin.Plugin.IssueReporter.GeneratedMSBuildEditorConfig.editorconfig
+/src/Jellyfin.Plugin.IssueReporter/obj/Release/net10.0/Jellyfin.Plugin.IssueReporter.AssemblyInfoInputs.cache
+/src/Jellyfin.Plugin.IssueReporter/obj/Release/net10.0/Jellyfin.Plugin.IssueReporter.AssemblyInfo.cs
+/src/Jellyfin.Plugin.IssueReporter/obj/Release/net10.0/Jellyfin.Plugin.IssueReporter.csproj.CoreCompileInputs.cache
+/src/Jellyfin.Plugin.IssueReporter/obj/Release/net10.0/Jellyfin.Plugin.IssueReporter.sourcelink.json
+/src/Jellyfin.Plugin.IssueReporter/bin/Release/net10.0/Jellyfin.Plugin.IssueReporter.deps.json
+/src/Jellyfin.Plugin.IssueReporter/bin/Release/net10.0/Jellyfin.Plugin.IssueReporter.dll
+/src/Jellyfin.Plugin.IssueReporter/bin/Release/net10.0/Jellyfin.Plugin.IssueReporter.pdb
+/src/Jellyfin.Plugin.IssueReporter/bin/Release/net10.0/Jellyfin.Plugin.IssueReporter.xml
+/src/Jellyfin.Plugin.IssueReporter/obj/Release/net10.0/Jellyfin.Plugin.IssueReporter.dll
+/src/Jellyfin.Plugin.IssueReporter/obj/Release/net10.0/refint/Jellyfin.Plugin.IssueReporter.dll
+/src/Jellyfin.Plugin.IssueReporter/obj/Release/net10.0/Jellyfin.Plugin.IssueReporter.xml
+/src/Jellyfin.Plugin.IssueReporter/obj/Release/net10.0/Jellyfin.Plugin.IssueReporter.pdb
+/src/Jellyfin.Plugin.IssueReporter/obj/Release/net10.0/ref/Jellyfin.Plugin.IssueReporter.dll

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Issue Reporter</title>
+</head>
+<body>
+<div id="IssueReporterConfigPage" data-role="page" class="page type-interior pluginConfigurationPage" data-require="emby-input,emby-button,emby-select,emby-checkbox,emby-textarea">
+    <div data-role="content">
+        <div class="content-primary">
+            <form id="IssueReporterConfigForm">
+                <div class="sectionTitleContainer flex align-items-center">
+                    <h2 class="sectionTitle">Issue Reporter (For Plugin Developers)</h2>
+                </div>
+                <p class="fieldDescription">
+                    Resource-efficient O(1) log monitor that masks secrets across 4 security layers, deduplicates GitHub issues with version intelligence, and auto-fills issue templates.
+                </p>
+
+                <div class="inputContainer">
+                    <label class="inputLabel" for="AuthMethod">Authentication Method</label>
+                    <select is="emby-select" id="AuthMethod" class="emby-select-withcolor">
+                        <option value="none">Unconfigured</option>
+                        <option value="github_app">GitHub App (Bot PEM, e.g. faserf-hermes-agent[bot])</option>
+                        <option value="device_flow">GitHub OAuth Device Flow</option>
+                        <option value="pat">Personal Access Token (PAT)</option>
+                    </select>
+                </div>
+
+                <div id="GitHubAppFields">
+                    <div class="inputContainer">
+                        <label class="inputLabel" for="AppId">GitHub App ID</label>
+                        <input is="emby-input" id="AppId" type="text" />
+                    </div>
+                    <div class="inputContainer">
+                        <label class="inputLabel" for="InstallationId">Installation ID (optional, auto-discovered)</label>
+                        <input is="emby-input" id="InstallationId" type="text" />
+                    </div>
+                    <div class="inputContainer">
+                        <label class="inputLabel" for="PrivateKeyPem">Private Key PEM</label>
+                        <textarea is="emby-textarea" id="PrivateKeyPem" rows="4"></textarea>
+                    </div>
+                </div>
+
+                <div id="TokenFields">
+                    <div class="inputContainer">
+                        <label class="inputLabel" for="GitHubToken">GitHub Token (PAT or OAuth)</label>
+                        <input is="emby-input" id="GitHubToken" type="password" />
+                    </div>
+                    <div class="inputContainer">
+                        <label class="inputLabel" for="GitHubUser">Authenticated GitHub User / Owner</label>
+                        <input is="emby-input" id="GitHubUser" type="text" />
+                    </div>
+                </div>
+
+                <div class="inputContainer">
+                    <label class="inputLabel" for="OwnerFilterMode">Repository Owner Filter</label>
+                    <select is="emby-select" id="OwnerFilterMode" class="emby-select-withcolor">
+                        <option value="self">Only my own repositories (self)</option>
+                        <option value="custom">Custom owner allowlist</option>
+                        <option value="manual">Manual opt-in per plugin</option>
+                    </select>
+                </div>
+
+                <div class="inputContainer">
+                    <label class="inputLabel" for="OwnerAllowlist">Owner Allowlist (comma-separated, e.g. FaserF)</label>
+                    <input is="emby-input" id="OwnerAllowlist" type="text" />
+                </div>
+
+                <div class="inputContainer">
+                    <label class="inputLabel" for="MinSeverity">Minimum Log Severity</label>
+                    <select is="emby-select" id="MinSeverity" class="emby-select-withcolor">
+                        <option value="Warning">Warning</option>
+                        <option value="Error">Error</option>
+                        <option value="Critical">Critical</option>
+                    </select>
+                </div>
+
+                <div class="checkboxContainer checkboxContainer-withDescription">
+                    <label>
+                        <input is="emby-checkbox" id="DryRun" type="checkbox" />
+                        <span>Dry-Run Mode (queue drafts for review instead of auto-posting)</span>
+                    </label>
+                </div>
+
+                <div class="inputContainer">
+                    <label class="inputLabel" for="CustomRepoMappings">Universal Custom Repo Mappings (one per line: PluginNameOrAssembly=owner/repo)</label>
+                    <textarea is="emby-textarea" id="CustomRepoMappings" rows="3" placeholder="MyCustomPlugin=someone/jellyfin-plugin-custom"></textarea>
+                </div>
+
+                <h3>Anti-Spam &amp; Local Error Filters</h3>
+                <div class="inputContainer">
+                    <label class="inputLabel" for="CooldownHours">Cooldown Hours per Fingerprint</label>
+                    <input is="emby-input" id="CooldownHours" type="number" min="1" />
+                </div>
+                <div class="inputContainer">
+                    <label class="inputLabel" for="MaxIssuesPerHour">Max Issues per Hour</label>
+                    <input is="emby-input" id="MaxIssuesPerHour" type="number" min="1" />
+                </div>
+                <div class="inputContainer">
+                    <label class="inputLabel" for="MaxIssuesPerRepoDay">Max Issues per Repo / Day</label>
+                    <input is="emby-input" id="MaxIssuesPerRepoDay" type="number" min="1" />
+                </div>
+
+                <div class="checkboxContainer"><label><input is="emby-checkbox" id="IgnoreNetworkErrors" type="checkbox" /><span>Ignore network / DNS / timeout / 502-504 errors</span></label></div>
+                <div class="checkboxContainer"><label><input is="emby-checkbox" id="IgnoreAuthErrors" type="checkbox" /><span>Ignore 401 / 403 / invalid credential errors</span></label></div>
+                <div class="checkboxContainer"><label><input is="emby-checkbox" id="IgnoreRateLimitErrors" type="checkbox" /><span>Ignore 429 rate-limit errors</span></label></div>
+                <div class="checkboxContainer"><label><input is="emby-checkbox" id="IgnoreLifecycleErrors" type="checkbox" /><span>Ignore shutdown / cancellation exceptions</span></label></div>
+
+                <h3>4-Layer Privacy &amp; Redaction</h3>
+                <div class="inputContainer">
+                    <label class="inputLabel" for="CustomRedactions">Custom Redactions (comma-separated domains/words)</label>
+                    <input is="emby-input" id="CustomRedactions" type="text" />
+                </div>
+                <div class="checkboxContainer"><label><input is="emby-checkbox" id="StrictEntropyGuard" type="checkbox" /><span>Strict High-Entropy Leak Guard (abort on suspected unredacted secrets)</span></label></div>
+
+                <div>
+                    <button is="emby-button" type="submit" class="raised button-submit block"><span>Save</span></button>
+                </div>
+            </form>
+
+            <hr />
+            <h3>Live Status, Discovered Plugins &amp; Pending Drafts</h3>
+            <button is="emby-button" type="button" id="RefreshStatusBtn" class="raised"><span>Refresh &amp; Scan Now</span></button>
+            <pre id="IssueReporterStatusBox" style="white-space: pre-wrap; background: rgba(0,0,0,0.25); padding: 12px; border-radius: 6px; margin-top: 10px;"></pre>
+        </div>
+    </div>
+    <script type="text/javascript">
+        (function () {
+            const pluginId = '8c4e7f2a-1b9d-4e3a-9c5f-6a2b8d1e4f90';
+            const page = document.querySelector('#IssueReporterConfigPage');
+
+            function loadStatus() {
+                ApiClient.getJSON(ApiClient.getUrl('IssueReporter/Status')).then(function (data) {
+                    page.querySelector('#IssueReporterStatusBox').textContent = JSON.stringify(data, null, 2);
+                });
+            }
+
+            page.addEventListener('pageshow', function () {
+                Dashboard.showLoadingMsg();
+                ApiClient.getPluginConfiguration(pluginId).then(function (cfg) {
+                    page.querySelector('#AuthMethod').value = cfg.AuthMethod || 'none';
+                    page.querySelector('#AppId').value = cfg.AppId || '';
+                    page.querySelector('#InstallationId').value = cfg.InstallationId || '';
+                    page.querySelector('#PrivateKeyPem').value = cfg.PrivateKeyPem || '';
+                    page.querySelector('#GitHubToken').value = cfg.GitHubToken || '';
+                    page.querySelector('#GitHubUser').value = cfg.GitHubUser || '';
+                    page.querySelector('#OwnerFilterMode').value = cfg.OwnerFilterMode || 'self';
+                    page.querySelector('#OwnerAllowlist').value = cfg.OwnerAllowlist || 'FaserF';
+                    page.querySelector('#MinSeverity').value = cfg.MinSeverity || 'Error';
+                    page.querySelector('#DryRun').checked = cfg.DryRun !== false;
+                    page.querySelector('#CustomRepoMappings').value = cfg.CustomRepoMappings || '';
+                    page.querySelector('#CooldownHours').value = cfg.CooldownHours || 24;
+                    page.querySelector('#MaxIssuesPerHour').value = cfg.MaxIssuesPerHour || 5;
+                    page.querySelector('#MaxIssuesPerRepoDay').value = cfg.MaxIssuesPerRepoDay || 2;
+                    page.querySelector('#IgnoreNetworkErrors').checked = cfg.IgnoreNetworkErrors !== false;
+                    page.querySelector('#IgnoreAuthErrors').checked = cfg.IgnoreAuthErrors !== false;
+                    page.querySelector('#IgnoreRateLimitErrors').checked = cfg.IgnoreRateLimitErrors !== false;
+                    page.querySelector('#IgnoreLifecycleErrors').checked = cfg.IgnoreLifecycleErrors !== false;
+                    page.querySelector('#CustomRedactions').value = cfg.CustomRedactions || '';
+                    page.querySelector('#StrictEntropyGuard').checked = cfg.StrictEntropyGuard !== false;
+                    Dashboard.hideLoadingMsg();
+                    loadStatus();
+                });
+            });
+
+            page.querySelector('#RefreshStatusBtn').addEventListener('click', function () {
+                ApiClient.ajax({ type: 'POST', url: ApiClient.getUrl('IssueReporter/ScanNow') }).then(loadStatus);
+            });
+
+            page.querySelector('#IssueReporterConfigForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+                Dashboard.showLoadingMsg();
+                ApiClient.getPluginConfiguration(pluginId).then(function (cfg) {
+                    cfg.AuthMethod = page.querySelector('#AuthMethod').value;
+                    cfg.AppId = page.querySelector('#AppId').value.trim();
+                    cfg.InstallationId = page.querySelector('#InstallationId').value.trim();
+                    cfg.PrivateKeyPem = page.querySelector('#PrivateKeyPem').value.trim();
+                    cfg.GitHubToken = page.querySelector('#GitHubToken').value.trim();
+                    cfg.GitHubUser = page.querySelector('#GitHubUser').value.trim();
+                    cfg.OwnerFilterMode = page.querySelector('#OwnerFilterMode').value;
+                    cfg.OwnerAllowlist = page.querySelector('#OwnerAllowlist').value.trim();
+                    cfg.MinSeverity = page.querySelector('#MinSeverity').value;
+                    cfg.DryRun = page.querySelector('#DryRun').checked;
+                    cfg.CustomRepoMappings = page.querySelector('#CustomRepoMappings').value;
+                    cfg.CooldownHours = parseInt(page.querySelector('#CooldownHours').value, 10) || 24;
+                    cfg.MaxIssuesPerHour = parseInt(page.querySelector('#MaxIssuesPerHour').value, 10) || 5;
+                    cfg.MaxIssuesPerRepoDay = parseInt(page.querySelector('#MaxIssuesPerRepoDay').value, 10) || 2;
+                    cfg.IgnoreNetworkErrors = page.querySelector('#IgnoreNetworkErrors').checked;
+                    cfg.IgnoreAuthErrors = page.querySelector('#IgnoreAuthErrors').checked;
+                    cfg.IgnoreRateLimitErrors = page.querySelector('#IgnoreRateLimitErrors').checked;
+                    cfg.IgnoreLifecycleErrors = page.querySelector('#IgnoreLifecycleErrors').checked;
+                    cfg.CustomRedactions = page.querySelector('#CustomRedactions').value;
+                    cfg.StrictEntropyGuard = page.querySelector('#StrictEntropyGuard').checked;
+                    ApiClient.updatePluginConfiguration(pluginId, cfg).then(function (res) {
+                        Dashboard.processPluginConfigurationUpdateResult(res);
+                        ApiClient.ajax({ type: 'POST', url: ApiClient.getUrl('IssueReporter/ScanNow') }).then(loadStatus);
+                    });
+                });
+                return false;
+            });
+        })();
+    </script>
+</div>
+</body>
+</html>
